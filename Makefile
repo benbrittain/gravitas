@@ -16,7 +16,10 @@ YACC_OBJECTS=$(patsubst %.y,%.c,${YACC_SOURCES}) $(patsubst %.y,%.h,${YACC_SOURC
 SOURCES=$(wildcard src/**/*.c src/*.c)
 OBJECTS=$(patsubst %.c,%.o,${SOURCES}) $(patsubst %.l,%.o,${LEX_SOURCES}) $(patsubst %.y,%.o,${YACC_SOURCES})
 
-all: build/libgravitas.a build/gravitas
+TEST_SOURCES=$(wildcard tests/*.c)
+TEST_OBJECTS=$(patsubst %.c,%,${TEST_SOURCES})
+
+all: build/libgravitas.a build/gravitas test
 
 ## Build Archive
 build/libgravitas.a: build ${OBJECTS}
@@ -40,6 +43,9 @@ src/lexer.c: src/parser.c
 src/parser.c: src/parser.y
 	${YACC} ${YACCFLAGS} -o $@ $^
 
+
+.PHONY: test
+
 ## Clean things!
 clean:
-	rm -rf gravitas build/* $(YACC_OBJECTS) $(LEX_OBJECTS) $(OBJECTS)
+	rm -rf gravitas build/* $(YACC_OBJECTS) $(LEX_OBJECTS) $(OBJECTS) $(TEST_OBJECTS)
