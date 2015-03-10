@@ -6,3 +6,4 @@ src/**/*.o
 **/*.swp
 *.swo
 **/*.swo
+*.bc
