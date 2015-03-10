@@ -13,6 +13,7 @@
 [ \t\n]                 ;
 [a-zA-Z_][a-zA-Z0-9_]*  SAVE_TOKEN; return TIDENTIFIER;
 [0-9]*                  SAVE_NUMBER; return TNUMBER;
+"+"                     return TOKEN(TPLUS);
 .                       printf("Unknown token!\n"); yyterminate();
 
 %%

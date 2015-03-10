@@ -19,11 +19,15 @@
 
 %token <string> TIDENTIFIER
 %token <number> TNUMBER
+%token <token> TEQUAL TPLUS
+
 %type <node> expr ident number
+
 %right '='
 %left '-' '+'
 %left '*' '/'
 %left NEG
+
 %start program
 
 %%
@@ -35,7 +39,8 @@ program : /* empty */
 
         number : TNUMBER { $$ = ast_number_create($1); };
 
-        expr : number
+        expr : expr TPLUS expr { $$ = ast_binary_expr_create(BINOP_PLUS, $1, $3); }
+             | number
              | ident
              ;
 %%

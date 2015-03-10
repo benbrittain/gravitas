@@ -2,3 +2,7 @@ bin/
 build/
 src/*.o
 src/**/*.o
+*.swp
+**/*.swp
+*.swo
+**/*.swo

@@ -1,3 +1,5 @@
+#ifndef _ast_h
+#define _ast_h
 // Definitions
 typedef enum ast_node_type_e {
     AST_TYPE_NUMBER,
@@ -7,6 +9,15 @@ typedef enum ast_node_type_e {
     AST_TYPE_PROTOTYPE,
     AST_TYPE_FUNCTION,
 } ast_node_type_e;
+
+
+typedef enum ast_binop_e {
+    BINOP_PLUS,
+    BINOP_MINUS,
+    BINOP_MUL,
+    BINOP_DIV,
+} ast_binop_e;
+
 
 struct ast_node;
 
@@ -64,3 +75,5 @@ ast_node *ast_call_create(char *callee, ast_node **args, int arg_count);
 ast_node *ast_prototype_create(char *name, char **args, int arg_count);
 ast_node *ast_function_create(ast_node *prototype, ast_node *body);
 void ast_node_free(ast_node *node);
+
+#endif

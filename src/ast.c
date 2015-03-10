@@ -16,6 +16,15 @@ ast_node *ast_variable_create(char *name) {
     return node;
 }
 
+ast_node *ast_binary_expr_create(char op, ast_node *lhs, ast_node *rhs) {
+    ast_node *node = malloc(sizeof(ast_node));
+    node->type = AST_TYPE_BINARY_EXPR;
+    node->binary_expr.op = op;
+    node->binary_expr.lhs = lhs;
+    node->binary_expr.rhs = rhs;
+    return node;
+}
+
 
 void ast_node_free(ast_node *node)
 {
