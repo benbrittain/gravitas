@@ -13,7 +13,7 @@ typedef enum ast_node_type_e {
 
 typedef enum ast_binop_e {
     BINOP_PLUS,
-    BINOP_MINUS,
+    BINOP_MIN,
     BINOP_MUL,
     BINOP_DIV,
 } ast_binop_e;
@@ -35,25 +35,16 @@ typedef struct ast_binary_expr {
     struct ast_node *rhs;
 } ast_binary_expr;
 
-typedef struct ast_call {
-    char *callee;
-    struct ast_node **args;
-    int arg_count;
-} ast_call;
-
-
 typedef struct ast_prototype {
     char *name;
     char **args;
     int arg_count;
 } ast_prototype;
 
-
 typedef struct ast_function {
     struct ast_node *prototype;
     struct ast_node *body;
 } ast_function;
-
 
 typedef struct ast_node {
     ast_node_type_e type;
@@ -61,7 +52,6 @@ typedef struct ast_node {
         ast_number number;
         ast_variable variable;
         ast_binary_expr binary_expr;
-        ast_call call;
         ast_prototype prototype;
         ast_function function;
     };
@@ -71,7 +61,6 @@ typedef struct ast_node {
 ast_node *ast_number_create(double value);
 ast_node *ast_variable_create(char *name);
 ast_node *ast_binary_expr_create(char op, ast_node *lhs, ast_node *rhs);
-ast_node *ast_call_create(char *callee, ast_node **args, int arg_count);
 ast_node *ast_prototype_create(char *name, char **args, int arg_count);
 ast_node *ast_function_create(ast_node *prototype, ast_node *body);
 void ast_node_free(ast_node *node);

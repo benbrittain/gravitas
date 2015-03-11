@@ -9,6 +9,27 @@ ast_node *ast_number_create(double value) {
     return node;
 }
 
+ast_node *ast_prototype_create(char *name, char **args, int arg_count) {
+    ast_node *node = malloc(sizeof(ast_node));
+    node->type = AST_TYPE_PROTOTYPE;
+    node->prototype.name = strdup(name);
+    node->prototype.args = malloc(sizeof(char*) * arg_count);
+    int i;
+    for(i=0; i<arg_count; i++) {
+        node->prototype.args[i] = strdup(args[i]);
+    }
+    node->prototype.arg_count = arg_count;
+    return node;
+}
+
+ast_node *ast_function_create(ast_node *proto, ast_node *body) {
+    ast_node *node = malloc(sizeof(ast_node));
+    node->type = AST_TYPE_FUNCTION;
+    node->function.prototype = proto;
+    node->function.body = body;
+    return node;
+}
+
 ast_node *ast_variable_create(char *name) {
     ast_node *node = malloc(sizeof(ast_node));
     node->type = AST_TYPE_VARIABLE;
@@ -30,5 +51,4 @@ void ast_node_free(ast_node *node)
 {
     int i;
     if(!node) return;
-
 }
