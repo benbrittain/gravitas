@@ -18,6 +18,10 @@
     char *string;
     double number;
     struct {
+      ast_node **args;
+      int count;
+    } call_args;
+    struct {
       char **args;
       int count;
     } args;
@@ -28,8 +32,9 @@
 %token <string> TIDENTIFIER
 %token <number> TNUMBER
 %token <token> TEQUAL TPLUS TMIN TDIV TMUL TLAMBDA TBITLEFT TBITRIGHT TARROW TCOMMA TOP TCP
-%type <node> expr ident number function prototype call_args
+%type <node> expr ident number function prototype call
 %type <args> args
+%type <call_args> call_args
 
 %right '='
 %left '-' '+'
@@ -60,10 +65,13 @@ prototype   : TIDENTIFIER TOP args TCP { $$ = ast_prototype_create("", $3.args, 
             | args { $$ = ast_prototype_create("", $1.args, $1.count); free_args((void**)$1.args, $1.count); }
             ;
 
-call_args   : /*blank*/ { $$.count = 0; $$.args = NULL; }
+call        : TIDENTIFIER call_args { $$ = ast_method_call_create($1, $2.args, $2.count); free($1); free($2.args); };
+
+call_args   : /* empty */ { $$.count = 0; $$.args = NULL; }
             | expr { $$.count = 1; $$.args = malloc(sizeof(ast_node*)); $$.args[0] = $1; }
-            | call_args expr { $1.count++; $1.args = realloc($1.args, sizeof(ast_node*) * $1.count); $1.args[$1.count - 1] = $2; $$ = $1; }
+            | call_args expr { $1.count++; $1.args = realloc($1.args, sizeof(ast_node*) * $1.count); $1.args[$1.count-1] = $2; $$ = $1; }
             ;
+
 
 function    : TLAMBDA prototype TARROW expr { $$ = ast_function_create($2, $4); };
 
@@ -72,6 +80,7 @@ expr        : expr TMUL  expr { $$ = ast_binary_expr_create(BINOP_MUL, $1, $3); 
             | expr TMIN  expr { $$ = ast_binary_expr_create(BINOP_MIN, $1, $3); }
             | expr TPLUS expr { $$ = ast_binary_expr_create(BINOP_PLUS, $1, $3); }
             | number
+            | call
             | ident
             ;
 %%

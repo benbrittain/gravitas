@@ -63,6 +63,7 @@ ast_node *ast_variable_create(char *name);
 ast_node *ast_binary_expr_create(char op, ast_node *lhs, ast_node *rhs);
 ast_node *ast_prototype_create(char *name, char **args, int arg_count);
 ast_node *ast_function_create(ast_node *prototype, ast_node *body);
+ast_node *ast_method_call_create(char *name, ast_node **args, int count);
 void ast_node_free(ast_node *node);
 
 #endif

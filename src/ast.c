@@ -46,6 +46,11 @@ ast_node *ast_binary_expr_create(char op, ast_node *lhs, ast_node *rhs) {
     return node;
 }
 
+ast_node *ast_method_call_create(char *name, ast_node **args, int count) {
+    return NULL;
+}
+
+
 
 void ast_node_free(ast_node *node)
 {
