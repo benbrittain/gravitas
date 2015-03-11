@@ -1,2 +1,2 @@
 #Very Little Gravitas Indeed
-An experimental toy programming language
+A hand-crafted artisnal programming language
